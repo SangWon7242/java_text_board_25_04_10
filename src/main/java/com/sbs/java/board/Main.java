@@ -59,8 +59,13 @@ public class Main {
   }
 }
 
-class Article {
+class Article extends Object {
   int id;
   String subject;
   String content;
+
+  @Override 
+  public String toString() {
+    return "{id: %d, subject: \"%s\", content: \"%s\"}".formatted(id, subject, content);
+  }
 }
