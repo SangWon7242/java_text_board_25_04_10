@@ -18,8 +18,18 @@ public class Main {
         System.out.print("제목 : ");
         String subject = sc.nextLine();
 
+        if(subject.trim().isEmpty()) {
+          System.out.println("제목을 입력해주세요.");
+          continue;
+        }
+
         System.out.print("내용 : ");
         String content = sc.nextLine();
+
+        if(content.trim().isEmpty()) {
+          System.out.println("내용을 입력해주세요.");
+          continue;
+        }
 
         int id = 1;
 
