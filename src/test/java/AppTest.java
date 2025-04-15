@@ -4,12 +4,12 @@ import java.util.List;
 
 public class AppTest {
   public static void main(String[] args) {
-    String queryString = "f=15&a=1&b=2&c=3&d=4";
+    String queryString = "subject=제목1&content=내용1&writerName=양관식&boardId=5";
     String[] queryStringBits = queryString.split("&");
     System.out.println(Arrays.toString(queryStringBits));
 
     List<String> paramNames = new ArrayList<>();
-    List<Integer> paramValues = new ArrayList<>();
+    List<String> paramValues = new ArrayList<>();
 
     for (String bit : queryStringBits) {
       String[] bitBits = bit.split("=");
@@ -17,14 +17,14 @@ public class AppTest {
       String paramValue = bitBits[1];
 
       paramNames.add(paramName);
-      paramValues.add(Integer.parseInt(paramValue));
+      paramValues.add(paramValue);
     }
 
-    for(int i = 0; i < paramNames.size(); i++) {
-      String paramName = paramNames.get(i);
-      int paramValue = paramValues.get(i);
+    System.out.println(paramNames);
+    System.out.println(paramValues);
 
-      System.out.printf("%s : %d\n", paramName, paramValue);
-    }
+    String targetData = "content";
+    int findIndex = paramNames.indexOf("content");
+    System.out.printf("%s : %s\n", targetData, paramValues.get(findIndex));
   }
 }
