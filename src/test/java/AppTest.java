@@ -1,32 +1,37 @@
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 public class AppTest {
   public static void main(String[] args) {
-    String queryString1 = "subject=제목1&content=내용1&writerName=양관식&boardId=5";
-    Map<String, String> params1 = Util.getParams(queryString1);
-    System.out.println(params1);
+    String url = "/usr/article/write?subject=자바는 무엇인가요?&content=자바는 객체지향 프로그래밍 언어입니다.1+2=3&writerName=오애순&boardId=1&id=";
+    Map<String, String> params = Util.getParamsFromUrl(url);
 
-    String queryString2 = "subject=제목20&content=내용20&writerName=오애순&boardId=1";
-    Map<String, String> params2 = Util.getParams(queryString2);
-    System.out.println(params2);
+    System.out.println(params.get("subject")); // 자바는 무엇인가요?
+    System.out.println(params.get("content")); // 자바는 개체지향 프로그래밍 언어입니다.1+2=3
+    System.out.println(params.get("writerName")); // 오애순
+    System.out.println(params.get("boardId")); // 1
 
   }
 }
 
 class Util {
-  static Map<String, String> getParams(String queryStr) {
-    Map<String, String> params = new LinkedHashMap<>();
+  static Map<String, String> getParamsFromUrl(String url) {
+    Map<String, String> params = new HashMap<>();
 
-    String[] queryString = queryStr.split("&");
+    String[] urlBits = url.split("\\?", 2);
 
-    for(String bit : queryString) {
-      String[] bitBits = bit.split("=");
+    if(urlBits.length == 1) return params;
 
-      params.put(bitBits[0], bitBits[1]);
+    String queryStr = urlBits[1];
+
+    for(String bit : queryStr.split("&")) {
+      String[] bits = bit.split("=", 2);
+
+      if(bits.length == 1) continue;
+
+      params.put(bits[0], bits[1]);
     }
 
     return params;
   }
-
 }
