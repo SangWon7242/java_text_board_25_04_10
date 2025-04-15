@@ -33,8 +33,6 @@ public class Main {
 
     int lastArticleId = articles.get(articles.size() - 1).id;
 
-    Article lastArticle = null;
-
     System.out.println("== 자바 텍스트 게시판 ==");
     System.out.println("텍스트 게시판을 시작합니다.");
 
@@ -64,8 +62,6 @@ public class Main {
 
         // 객체 생성 후, 객체가 가지고 있는 변수에 데이터 저장
         Article article = new Article(id, subject, content);
-        lastArticle = article;
-
         articles.add(article);
 
         System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
@@ -85,10 +81,15 @@ public class Main {
         }
 
       } else if (cmd.equals("/usr/article/detail")) {
-        Article article = lastArticle;
+        if(articles.isEmpty()) {
+          System.out.println("게시물이 존재하지 않습니다.");
+          continue;
+        }
+
+        Article article = articles.get(articles.size() - 1);
 
         if (article == null) {
-          System.out.println("게시물이 존재하지 않습니다.");
+          System.out.println("원하는 게시물이 존재하지 않습니다.");
           continue;
         }
 
@@ -120,7 +121,6 @@ class Article {
     this.subject = subject;
     this.content = content;
   }
-
 
   @Override
   public String toString() {
