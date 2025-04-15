@@ -3,17 +3,30 @@ import java.util.Map;
 
 public class AppTest {
   public static void main(String[] args) {
-    String url = "/usr/article/write?subject=자바는 무엇인가요?&content=자바는 객체지향 프로그래밍 언어입니다.1+2=3&writerName=오애순&boardId=1&id=";
-    Map<String, String> params = Util.getParamsFromUrl(url);
+    Rq rq = new Rq("/usr/article/write?subject=자바는 무엇인가요?&content=자바는 객체지향 프로그래밍 언어입니다.1+2=3&writerName=오애순&boardId=1&id=");
 
-    System.out.println(params.get("subject")); // 자바는 무엇인가요?
-    System.out.println(params.get("content")); // 자바는 개체지향 프로그래밍 언어입니다.1+2=3
-    System.out.println(params.get("writerName")); // 오애순
-    System.out.println(params.get("boardId")); // 1
-
-    String urlPath = Util.getPathFromUrl(url);
+    Map<String, String> params = rq.getParams();
+    System.out.println(params);
+    
+    String urlPath = rq.getUrlPath();
     System.out.println(urlPath);
 
+  }
+}
+
+class Rq {
+  String url;
+
+  Rq(String url) {
+    this.url = url;
+  }
+
+  public Map<String, String> getParams() {
+    return Util.getParamsFromUrl(url);
+  }
+
+  public String getUrlPath() {
+    return Util.getPathFromUrl(url);
   }
 }
 
