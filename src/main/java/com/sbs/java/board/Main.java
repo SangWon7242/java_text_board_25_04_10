@@ -66,6 +66,14 @@ public class Main {
 
         System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
+        Map<String, String> params = rq.getParams();
+
+        boolean orderByIdDesc = true;
+
+        if(params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
+          orderByIdDesc = false;
+        }
+
         if(articles.isEmpty()) {
           System.out.println("게시물이 존재하지 않습니다.");
           continue;
@@ -74,10 +82,19 @@ public class Main {
         System.out.println("== 게시물 리스트 ==");
         System.out.println("번호 | 제목");
 
-        for(int i = articles.size() - 1; i >= 0; i--) {
-          Article article = articles.get(i);
+        if(orderByIdDesc) {
+          // 내림차순 출력
+          for(int i = articles.size() - 1; i >= 0; i--) {
+            Article article = articles.get(i);
 
-          System.out.printf("%d | %s\n", article.id, article.subject);
+            System.out.printf("%d | %s\n", article.id, article.subject);
+          }
+        }
+        else {
+          // 오름 차순 출력
+          articles.forEach(
+              article -> System.out.printf("%d | %s\n", article.id, article.subject)
+          );
         }
 
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
