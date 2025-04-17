@@ -25,21 +25,15 @@ class Rq {
 
   Rq(String url) {
     this.url = url;
+    params = Util.getParamsFromUrl(this.url);
+    urlPath = Util.getPathFromUrl(this.url);
   }
 
   public Map<String, String> getParams() {
-    if(params == null) {
-      params = Util.getParamsFromUrl(url);
-    }
-
     return params;
   }
 
   public String getUrlPath() {
-    if (urlPath == null) {
-      urlPath = Util.getPathFromUrl(url);
-    }
-
     return urlPath;
   }
 }
