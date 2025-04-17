@@ -68,39 +68,37 @@ public class Main {
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         Map<String, String> params = rq.getParams();
 
-        boolean orderByIdDesc = true;
+        List<Article> sortedArticles = new ArrayList<>(articles);
 
-        if(params.containsKey("orderBy") && params.get("orderBy").equals("idAsc")) {
-          orderByIdDesc = false;
+        if (params.containsKey("orderBy")) {
+          String orderBy = params.get("orderBy");
+
+          switch (orderBy) {
+            case "idAsc":
+              sortedArticles.sort((a1, a2) -> a1.id - a2.id);
+              break;
+            case "idDesc":
+            default:
+              sortedArticles.sort((a1, a2) -> a2.id - a1.id);
+              break;
+          }
         }
-
-        if(articles.isEmpty()) {
-          System.out.println("게시물이 존재하지 않습니다.");
-          continue;
+        else {
+          // /usr/article/list 라고만 입력이 된 경우를 대비
+          sortedArticles.sort((a1, a2) -> a2.id - a1.id);
         }
 
         System.out.println("== 게시물 리스트 ==");
         System.out.println("번호 | 제목");
 
-        if(orderByIdDesc) {
-          // 내림차순 출력
-          for(int i = articles.size() - 1; i >= 0; i--) {
-            Article article = articles.get(i);
-
-            System.out.printf("%d | %s\n", article.id, article.subject);
-          }
-        }
-        else {
-          // 오름 차순 출력
-          articles.forEach(
-              article -> System.out.printf("%d | %s\n", article.id, article.subject)
-          );
-        }
+        sortedArticles.forEach(
+            article -> System.out.printf("%d | %s\n", article.id, article.subject)
+        );
 
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
         Map<String, String> params = rq.getParams();
 
-        if(!params.containsKey("id")) {
+        if (!params.containsKey("id")) {
           System.out.println("id값을 입력해주세요.");
           continue;
         }
@@ -115,7 +113,7 @@ public class Main {
         }
 
 
-        if(articles.isEmpty()) {
+        if (articles.isEmpty()) {
           System.out.println("게시물이 존재하지 않습니다.");
           continue;
         }
@@ -188,14 +186,14 @@ class Util {
 
     String[] urlBits = url.split("\\?", 2);
 
-    if(urlBits.length == 1) return params;
+    if (urlBits.length == 1) return params;
 
     String queryStr = urlBits[1];
 
-    for(String bit : queryStr.split("&")) {
+    for (String bit : queryStr.split("&")) {
       String[] bits = bit.split("=", 2);
 
-      if(bits.length == 1) continue;
+      if (bits.length == 1) continue;
 
       params.put(bits[0], bits[1]);
     }
