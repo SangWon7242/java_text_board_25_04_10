@@ -1,6 +1,7 @@
 package com.sbs.java.board;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -55,8 +56,25 @@ public class Main {
         System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         Map<String, String> params = rq.getParams();
+        
+        // 검색 시작
+        // articles : 정렬되지 않은 1 ~ 100 게시물 객체를 품고 있는 리스트
+        List<Article> filteredArticles = new ArrayList<>(articles);
 
-        List<Article> sortedArticles = new ArrayList<>(articles);
+        if(params.containsKey("searchKeyword")) {
+          String searchKeyword = params.get("searchKeyword");
+
+          // filteredArticles = new ArrayList<>(); // 새 리스트 객체 생성
+
+          filteredArticles = articles.stream()
+              .filter(article -> article.subject.contains(searchKeyword) || article.content.contains(searchKeyword))
+              .collect(Collectors.toList());
+        }
+        // 검색 끝
+        
+        
+        // 정렬 로직
+        List<Article> sortedArticles = filteredArticles;
 
         if (params.containsKey("orderBy")) {
           String orderBy = params.get("orderBy");
@@ -75,8 +93,9 @@ public class Main {
           // /usr/article/list 라고만 입력이 된 경우를 대비
           sortedArticles.sort((a1, a2) -> a2.id - a1.id);
         }
+        // 정렬 끝
 
-        System.out.println("== 게시물 리스트 ==");
+        System.out.printf("== 게시물 리스트(총 %d개) ==\n", sortedArticles.size());
         System.out.println("번호 | 제목");
 
         sortedArticles.forEach(
