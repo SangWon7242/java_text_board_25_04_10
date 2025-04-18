@@ -30,30 +30,8 @@ public class Main {
       Rq rq = new Rq(cmd);
 
       if (rq.getUrlPath().equals("/usr/article/write")) {
-        System.out.println("== 게시물 작성 ==");
-        System.out.print("제목 : ");
-        String subject = sc.nextLine();
-
-        if (subject.trim().isEmpty()) {
-          System.out.println("제목을 입력해주세요.");
-          continue;
-        }
-
-        System.out.print("내용 : ");
-        String content = sc.nextLine();
-
-        if (content.trim().isEmpty()) {
-          System.out.println("내용을 입력해주세요.");
-          continue;
-        }
-
-        int id = ++lastArticleId;
-
-        // 객체 생성 후, 객체가 가지고 있는 변수에 데이터 저장
-        Article article = new Article(id, subject, content);
-        articles.add(article);
-
-        System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
+        actionUsrArticleWrite(sc, articles, lastArticleId);
+        lastArticleId++;
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         actionUsrArticleList(rq, articles);
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
@@ -69,6 +47,33 @@ public class Main {
     System.out.println("== 자바 텍스트 게시판 종료 ==");
 
     sc.close();
+  }
+
+  private static void actionUsrArticleWrite(Scanner sc, List<Article> articles, int lastArticleId) {
+    System.out.println("== 게시물 작성 ==");
+    System.out.print("제목 : ");
+    String subject = sc.nextLine();
+
+    if (subject.trim().isEmpty()) {
+      System.out.println("제목을 입력해주세요.");
+      return;
+    }
+
+    System.out.print("내용 : ");
+    String content = sc.nextLine();
+
+    if (content.trim().isEmpty()) {
+      System.out.println("내용을 입력해주세요.");
+      return;
+    }
+
+    int id = ++lastArticleId;
+
+    // 객체 생성 후, 객체가 가지고 있는 변수에 데이터 저장
+    Article article = new Article(id, subject, content);
+    articles.add(article);
+
+    System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
   }
 
   private static void actionUsrArticleDetail(Rq rq, List<Article> articles) {
