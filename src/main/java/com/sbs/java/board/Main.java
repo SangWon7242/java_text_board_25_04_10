@@ -38,6 +38,8 @@ public class Main {
         actionUsrArticleDetail(rq, articles);
       } else if (rq.getUrlPath().equals("/usr/article/modify")) {
         actionUsrArticleModify(sc, rq, articles);
+      } else if (rq.getUrlPath().equals("/usr/article/delete")) {
+        actionUsrArticleDelete(rq, articles);
       } else if (rq.getUrlPath().equals("exit")) {
         System.out.println("텍스트 게시판을 종료합니다.");
         break;
@@ -49,6 +51,57 @@ public class Main {
     System.out.println("== 자바 텍스트 게시판 종료 ==");
 
     sc.close();
+  }
+
+  private static void actionUsrArticleDelete(Rq rq, List<Article> articles) {
+    Map<String, String> params = rq.getParams();
+
+    if (!params.containsKey("id")) {
+      System.out.println("id값을 입력해주세요.");
+      return;
+    }
+
+    int id = 0;
+
+    try {
+      id = Integer.parseInt(params.get("id"));
+    } catch (NumberFormatException e) {
+      System.out.println("id를 정수형태로 입력해주세요.");
+      return;
+    }
+
+    if (articles.isEmpty()) {
+      System.out.println("게시물이 존재하지 않습니다.");
+      return;
+    }
+
+    /*
+    // v1
+    Article findArticle = null;
+
+    for(Article article : articles) {
+      if(article.id == id) {
+        findArticle = article;
+        break;
+      }
+    }
+    */
+
+    // v2
+    int finalId = id;
+    Article findArticle = articles.stream()
+        .filter(article -> article.id == finalId)
+        .findFirst()
+        .orElse(null); // 못 찾은 경우에 null을 반환
+
+
+    if(findArticle == null) {
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+
+    articles.remove(findArticle);
+    System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
   }
 
   private static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
