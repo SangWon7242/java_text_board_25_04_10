@@ -75,32 +75,14 @@ public class Main {
       return;
     }
 
-    /*
-    // v1
-    Article findArticle = null;
+    Article article = findById(id, articles);
 
-    for(Article article : articles) {
-      if(article.id == id) {
-        findArticle = article;
-        break;
-      }
-    }
-    */
-
-    // v2
-    int finalId = id;
-    Article findArticle = articles.stream()
-        .filter(article -> article.id == finalId)
-        .findFirst()
-        .orElse(null); // 못 찾은 경우에 null을 반환
-
-
-    if(findArticle == null) {
+    if(article == null) {
       System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
       return;
     }
 
-    articles.remove(findArticle);
+    articles.remove(article);
     System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
   }
 
@@ -131,8 +113,14 @@ public class Main {
       return;
     }
 
+    Article article = findById(id, articles);
+
+    if(article == null) {
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+
     System.out.printf("== %d번 게시물 수정 ==\n", id);
-    Article article = articles.get(id - 1);
 
     System.out.print("새 제목 : ");
     article.subject = sc.nextLine();
@@ -197,9 +185,14 @@ public class Main {
       return;
     }
 
-    Article article = articles.get(id - 1);
+    Article article = findById(id, articles);
 
-    System.out.println("== 게시물 상세보기 ==");
+    if(article == null) {
+      System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
+      return;
+    }
+
+    System.out.printf("== %d번 게시물 상세보기 ==\n", id);
     System.out.printf("번호 : %d\n", article.id);
     System.out.printf("제목 : %s\n", article.subject);
     System.out.printf("내용 : %s\n", article.content);
@@ -214,8 +207,6 @@ public class Main {
 
     if(params.containsKey("searchKeyword")) {
       String searchKeyword = params.get("searchKeyword");
-
-      // filteredArticles = new ArrayList<>(); // 새 리스트 객체 생성
 
       filteredArticles = articles.stream()
           .filter(article -> article.subject.contains(searchKeyword) || article.content.contains(searchKeyword))
@@ -252,6 +243,13 @@ public class Main {
     sortedArticles.forEach(
         article -> System.out.printf("%d | %s\n", article.id, article.subject)
     );
+  }
+
+  private static Article findById(int id, List<Article> articles) {
+    return articles.stream()
+        .filter(article -> article.id == id)
+        .findFirst()
+        .orElse(null);
   }
 }
 
