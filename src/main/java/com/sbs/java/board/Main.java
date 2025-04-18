@@ -5,8 +5,10 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Main {
+  static List<Article> articles = new ArrayList<>();
+  static int lastArticleId = 0;
 
-  static void makeArticleTestData(List<Article> articles) {
+  static void makeArticleTestData() {
     IntStream.rangeClosed(1, 100)
         .forEach(i -> articles.add(new Article(i, "제목" + i, "내용" + i)));
   }
@@ -14,11 +16,7 @@ public class Main {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
 
-    List<Article> articles = new ArrayList<>();
-
-    makeArticleTestData(articles);
-
-    int lastArticleId = articles.get(articles.size() - 1).id;
+    makeArticleTestData();
 
     System.out.println("== 자바 텍스트 게시판 ==");
     System.out.println("텍스트 게시판을 시작합니다.");
@@ -30,16 +28,15 @@ public class Main {
       Rq rq = new Rq(cmd);
 
       if (rq.getUrlPath().equals("/usr/article/write")) {
-        actionUsrArticleWrite(sc, articles, lastArticleId);
-        lastArticleId++;
+        actionUsrArticleWrite(sc);
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
-        actionUsrArticleList(rq, articles);
+        actionUsrArticleList(rq);
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
-        actionUsrArticleDetail(rq, articles);
+        actionUsrArticleDetail(rq);
       } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-        actionUsrArticleModify(sc, rq, articles);
+        actionUsrArticleModify(sc, rq);
       } else if (rq.getUrlPath().equals("/usr/article/delete")) {
-        actionUsrArticleDelete(rq, articles);
+        actionUsrArticleDelete(rq);
       } else if (rq.getUrlPath().equals("exit")) {
         System.out.println("텍스트 게시판을 종료합니다.");
         break;
@@ -53,7 +50,7 @@ public class Main {
     sc.close();
   }
 
-  private static void actionUsrArticleDelete(Rq rq, List<Article> articles) {
+  private static void actionUsrArticleDelete(Rq rq) {
     Map<String, String> params = rq.getParams();
 
     if (!params.containsKey("id")) {
@@ -86,7 +83,7 @@ public class Main {
     System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
   }
 
-  private static void actionUsrArticleModify(Scanner sc, Rq rq, List<Article> articles) {
+  private static void actionUsrArticleModify(Scanner sc, Rq rq) {
     Map<String, String> params = rq.getParams();
 
     if (!params.containsKey("id")) {
@@ -131,7 +128,9 @@ public class Main {
     System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
   }
 
-  private static void actionUsrArticleWrite(Scanner sc, List<Article> articles, int lastArticleId) {
+  private static void actionUsrArticleWrite(Scanner sc) {
+    lastArticleId = articles.get(articles.size() - 1).id;
+
     System.out.println("== 게시물 작성 ==");
     System.out.print("제목 : ");
     String subject = sc.nextLine();
@@ -158,7 +157,7 @@ public class Main {
     System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
   }
 
-  private static void actionUsrArticleDetail(Rq rq, List<Article> articles) {
+  private static void actionUsrArticleDetail(Rq rq) {
     Map<String, String> params = rq.getParams();
 
     if (!params.containsKey("id")) {
@@ -198,7 +197,7 @@ public class Main {
     System.out.printf("내용 : %s\n", article.content);
   }
 
-  private static void actionUsrArticleList(Rq rq, List<Article> articles) {
+  private static void actionUsrArticleList(Rq rq) {
     Map<String, String> params = rq.getParams();
 
     // 검색 시작
