@@ -1,5 +1,7 @@
 package com.sbs.java.board;
 
+import com.sbs.java.board.container.Container;
+
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -7,6 +9,7 @@ import java.util.stream.IntStream;
 public class Main {
   static List<Article> articles = new ArrayList<>();
   static int lastArticleId = 0;
+  static Scanner sc = Container.sc;
 
   static void makeArticleTestData() {
     IntStream.rangeClosed(1, 100)
@@ -14,8 +17,6 @@ public class Main {
   }
 
   public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-
     makeArticleTestData();
 
     System.out.println("== 자바 텍스트 게시판 ==");
@@ -28,13 +29,13 @@ public class Main {
       Rq rq = new Rq(cmd);
 
       if (rq.getUrlPath().equals("/usr/article/write")) {
-        actionUsrArticleWrite(sc);
+        actionUsrArticleWrite();
       } else if (rq.getUrlPath().equals("/usr/article/list")) {
         actionUsrArticleList(rq);
       } else if (rq.getUrlPath().equals("/usr/article/detail")) {
         actionUsrArticleDetail(rq);
       } else if (rq.getUrlPath().equals("/usr/article/modify")) {
-        actionUsrArticleModify(sc, rq);
+        actionUsrArticleModify(rq);
       } else if (rq.getUrlPath().equals("/usr/article/delete")) {
         actionUsrArticleDelete(rq);
       } else if (rq.getUrlPath().equals("exit")) {
@@ -83,7 +84,7 @@ public class Main {
     System.out.printf("%d번 게시물이 삭제되었습니다.\n", id);
   }
 
-  private static void actionUsrArticleModify(Scanner sc, Rq rq) {
+  private static void actionUsrArticleModify(Rq rq) {
     Map<String, String> params = rq.getParams();
 
     if (!params.containsKey("id")) {
@@ -128,7 +129,7 @@ public class Main {
     System.out.printf("%d번 게시물이 수정되었습니다.\n", id);
   }
 
-  private static void actionUsrArticleWrite(Scanner sc) {
+  private static void actionUsrArticleWrite() {
     lastArticleId = articles.get(articles.size() - 1).id;
 
     System.out.println("== 게시물 작성 ==");
