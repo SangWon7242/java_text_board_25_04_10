@@ -16,7 +16,7 @@ public class ArticleRepository {
 
     makeArticleTestData();
 
-    lastId = articles.get(articles.size() - 1).id;
+    lastId = articles.get(articles.size() - 1).getId();
   }
 
   void makeArticleTestData() {
@@ -45,7 +45,7 @@ public class ArticleRepository {
 
     if (!searchKeyword.isEmpty()) {
       filteredArticles = articles.stream()
-          .filter(article -> article.subject.contains(searchKeyword) || article.content.contains(searchKeyword))
+          .filter(article -> article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword))
           .collect(Collectors.toList());
     }
     // 검색 끝
@@ -56,16 +56,16 @@ public class ArticleRepository {
     if (!orderBy.isEmpty()) {
       switch (orderBy) {
         case "idAsc":
-          sortedArticles.sort((a1, a2) -> a1.id - a2.id);
+          sortedArticles.sort((a1, a2) -> a1.getId() - a2.getId());
           break;
         case "idDesc":
         default:
-          sortedArticles.sort((a1, a2) -> a2.id - a1.id);
+          sortedArticles.sort((a1, a2) -> a2.getId() - a1.getId());
           break;
       }
     } else {
       // /usr/article/list 라고만 입력이 된 경우를 대비
-      sortedArticles.sort((a1, a2) -> a2.id - a1.id);
+      sortedArticles.sort((a1, a2) -> a2.getId() - a1.getId());
     }
     // 정렬 끝
 
@@ -75,8 +75,8 @@ public class ArticleRepository {
   public void modify(int id, String subject, String content) {
     Article article = findById(id);
 
-    article.subject = subject;
-    article.content = content;
+    article.setSubject(subject);
+    article.setContent(content);
   }
 
   public void delete(int id) {
@@ -92,7 +92,7 @@ public class ArticleRepository {
 
   public Article findById(int id) {
     return articles.stream()
-        .filter(article -> article.id == id)
+        .filter(article -> article.getId() == id)
         .findFirst()
         .orElse(null);
   }
