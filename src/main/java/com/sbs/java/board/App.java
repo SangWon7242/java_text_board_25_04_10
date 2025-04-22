@@ -1,13 +1,16 @@
 package com.sbs.java.board;
 
 import com.sbs.java.board.boundedContext.article.controller.ArticleController;
+import com.sbs.java.board.boundedContext.member.controller.MemberController;
 import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.base.Rq;
 
 public class App {
+  public MemberController memberController;
   public ArticleController articleController;
 
   public App() {
+    memberController = Container.memberController;
     articleController = Container.articleController;
   }
 
@@ -31,6 +34,8 @@ public class App {
         articleController.doModify(rq);
       } else if (rq.getUrlPath().equals("/usr/article/delete")) {
         articleController.doDelete(rq);
+      } else if (rq.getUrlPath().equals("/usr/member/join")) {
+        memberController.doJoin(rq);
       } else if (rq.getUrlPath().equals("exit")) {
         System.out.println("텍스트 게시판을 종료합니다.");
         break;
