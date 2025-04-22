@@ -1,19 +1,14 @@
 package com.sbs.java.board.boundedContext.member.controller;
 
-import com.sbs.java.board.boundedContext.member.dto.Member;
+import com.sbs.java.board.boundedContext.member.service.MemberService;
 import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.base.Rq;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MemberController {
-  private List<Member> members;
-  private int lastId;
+  private MemberService memberService;
 
   public MemberController() {
-    members = new ArrayList<>();
-    lastId = 0;
+    memberService = Container.memberService;
   }
 
   public void doJoin(Rq rq) {
@@ -80,10 +75,7 @@ public class MemberController {
       break;
     }
 
-    int id = ++lastId;
-
-    Member member = new Member(id, username, password, name);
-    members.add(member);
+    memberService.join(username, password, name);
 
     System.out.printf("'%s'님 회원 가입 되었습니다.\n", username);
   }
