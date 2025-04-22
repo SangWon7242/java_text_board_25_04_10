@@ -39,8 +39,16 @@ public class ArticleRepository {
   }
 
   public List<Article> findAll(String searchKeyword, String orderBy) {
-    // 검색 시작
-    // articles : 정렬되지 않은 1 ~ 100 게시물 객체를 품고 있는 리스트
+    // 검색 수행
+    List<Article> filteredArticles = filterByKeyword(searchKeyword);
+
+    // 정렬 수행
+    return sortArticles(filteredArticles, orderBy);
+  }
+  
+  
+  // 검색 로직을 담당
+  private List<Article> filterByKeyword(String searchKeyword) {
     List<Article> filteredArticles = findAll();
 
     if (!searchKeyword.isEmpty()) {
@@ -48,10 +56,13 @@ public class ArticleRepository {
           .filter(article -> article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword))
           .collect(Collectors.toList());
     }
-    // 검색 끝
 
-    // 정렬 로직
-    List<Article> sortedArticles = filteredArticles;
+    return filteredArticles;
+  }
+
+  // 정렬 로직을 담당
+  private List<Article> sortArticles(List<Article> articles, String orderBy) {
+    List<Article> sortedArticles = new ArrayList<>(articles);
 
     if (!orderBy.isEmpty()) {
       switch (orderBy) {
@@ -63,11 +74,7 @@ public class ArticleRepository {
           sortedArticles.sort((a1, a2) -> a2.getId() - a1.getId());
           break;
       }
-    } else {
-      // /usr/article/list 라고만 입력이 된 경우를 대비
-      sortedArticles.sort((a1, a2) -> a2.getId() - a1.getId());
     }
-    // 정렬 끝
 
     return sortedArticles;
   }
