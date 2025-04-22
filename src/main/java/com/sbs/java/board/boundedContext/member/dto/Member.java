@@ -5,11 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Data
 public class Member {
-  private int id;
-  private String username;
+  private final int id;
+  private final String username;
   private String password;
   private String name;
 }
