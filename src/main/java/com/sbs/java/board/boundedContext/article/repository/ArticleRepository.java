@@ -14,12 +14,12 @@ public class ArticleRepository {
   public ArticleRepository() {
     articles = new ArrayList<>();
 
-    makeArticleTestData();
+    makeTestData();
 
     lastId = articles.get(articles.size() - 1).getId();
   }
 
-  void makeArticleTestData() {
+  void makeTestData() {
     IntStream.rangeClosed(1, 100)
         .forEach(i -> write("제목" + i, "내용" + i));
   }

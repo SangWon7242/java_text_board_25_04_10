@@ -4,6 +4,7 @@ import com.sbs.java.board.boundedContext.member.dto.Member;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class MemberRepository {
   private List<Member> members;
@@ -11,7 +12,15 @@ public class MemberRepository {
 
   public MemberRepository() {
     members = new ArrayList<>();
-    lastId = 0;
+
+    makeTestData();
+
+    lastId = members.get(members.size() - 1).getId();
+  }
+
+  void makeTestData() {
+    IntStream.rangeClosed(1, 3)
+        .forEach(i -> join("user" + i, "user" + i, "테스트" + i));
   }
 
   public void join(String username, String password, String name) {
