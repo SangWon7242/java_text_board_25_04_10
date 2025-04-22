@@ -6,7 +6,6 @@ import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.base.Rq;
 
 import java.util.List;
-import java.util.Map;
 
 public class ArticleController {
   public ArticleService articleService;
@@ -39,17 +38,8 @@ public class ArticleController {
   }
 
   public void showList(Rq rq) {
-    Map<String, String> params = rq.getParams();
-    String searchKeyword = "";
-    String orderBy = "idDesc";
-
-    if(params.containsKey("searchKeyword")) {
-      searchKeyword = params.get("searchKeyword");
-    }
-
-    if(params.containsKey("orderBy")) {
-      orderBy = params.get("orderBy");
-    }
+    String searchKeyword = rq.getParam("searchKeyword", "");
+    String orderBy = rq.getParam("orderBy", "idDesc");
 
     List<Article> articles = articleService.findAll(searchKeyword, orderBy);
 
@@ -62,19 +52,10 @@ public class ArticleController {
   }
 
   public void showDetail(Rq rq) {
-    Map<String, String> params = rq.getParams();
+    int id = rq.getIntParam("id", 0);
 
-    if (!params.containsKey("id")) {
-      System.out.println("id값을 입력해주세요.");
-      return;
-    }
-
-    int id = 0;
-
-    try {
-      id = Integer.parseInt(params.get("id"));
-    } catch (NumberFormatException e) {
-      System.out.println("id를 정수형태로 입력해주세요.");
+    if(id == 0) {
+      System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
 
@@ -104,19 +85,10 @@ public class ArticleController {
   }
 
   public void doModify(Rq rq) {
-    Map<String, String> params = rq.getParams();
+    int id = rq.getIntParam("id", 0);
 
-    if (!params.containsKey("id")) {
-      System.out.println("id값을 입력해주세요.");
-      return;
-    }
-
-    int id = 0;
-
-    try {
-      id = Integer.parseInt(params.get("id"));
-    } catch (NumberFormatException e) {
-      System.out.println("id를 정수형태로 입력해주세요.");
+    if(id == 0) {
+      System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
 
@@ -147,19 +119,10 @@ public class ArticleController {
   }
 
   public void doDelete(Rq rq) {
-    Map<String, String> params = rq.getParams();
+    int id = rq.getIntParam("id", 0);
 
-    if (!params.containsKey("id")) {
-      System.out.println("id값을 입력해주세요.");
-      return;
-    }
-
-    int id = 0;
-
-    try {
-      id = Integer.parseInt(params.get("id"));
-    } catch (NumberFormatException e) {
-      System.out.println("id를 정수형태로 입력해주세요.");
+    if(id == 0) {
+      System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
 
