@@ -1,5 +1,6 @@
 package com.sbs.java.board.global.base;
 
+import com.sbs.java.board.boundedContext.member.dto.Member;
 import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.session.Session;
 import com.sbs.java.board.global.util.Util;
@@ -96,5 +97,17 @@ public class Rq {
   // 세션 제거
   public void removeSessionAttr(String attrName) {
     session.removeAttribute(attrName);
+  }
+
+  public void login(Member member) {
+    setSessionAttr(loginedMember, member);
+  }
+
+  public void logout() {
+    removeSessionAttr(loginedMember);
+  }
+
+  public Member getLoginedMember() {
+    return (Member) getSessionAttr(loginedMember);
   }
 }

@@ -160,18 +160,14 @@ public class MemberController implements Controller {
       break;
     }
 
-    rq.setSessionAttr("loginedMember", member);
+    rq.login(member);
 
     System.out.printf("'%s'님 로그인 되었습니다.\n", username);
   }
 
   private void doLogout(Rq rq) {
-    if(rq.isLogout()) {
-      System.out.println("로그인 후 이용해주세요.");
-      return;
-    }
+    rq.logout();
 
-    rq.removeSessionAttr("loginedMember");
     System.out.println("로그아웃 되었습니다.");
   }
 

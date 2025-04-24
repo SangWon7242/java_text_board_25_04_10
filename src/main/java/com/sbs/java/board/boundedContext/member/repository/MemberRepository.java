@@ -20,7 +20,7 @@ public class MemberRepository {
 
   void makeTestData() {
     IntStream.rangeClosed(1, 3)
-        .forEach(i -> join("user" + i, "user" + i, "테스트" + i));
+        .forEach(i -> join("user" + i, "user" + i, "유저" + i));
   }
 
   public void join(String username, String password, String name) {
