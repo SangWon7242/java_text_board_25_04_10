@@ -1,21 +1,15 @@
 package com.sbs.java.board;
 
-import com.sbs.java.board.boundedContext.article.controller.ArticleController;
 import com.sbs.java.board.boundedContext.controller.Controller;
-import com.sbs.java.board.boundedContext.member.controller.MemberController;
 import com.sbs.java.board.boundedContext.member.dto.Member;
 import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.base.Rq;
+import com.sbs.java.board.global.interceptor.Interceptor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class App {
-  public MemberController memberController;
-  public ArticleController articleController;
-
-  public App() {
-    memberController = Container.memberController;
-    articleController = Container.articleController;
-  }
-
   void run() {
     System.out.println("== 자바 텍스트 게시판 ==");
     System.out.println("텍스트 게시판을 시작합니다.");
@@ -37,6 +31,10 @@ public class App {
       rq.setCommand(cmd);
 
       rq.getActionPath();
+
+      if(!runInterceptor(rq)) {
+        continue;
+      }
 
       Controller controller = getControllerByRequestUri(rq);
 
@@ -67,5 +65,20 @@ public class App {
     }
 
     return null;
+  }
+
+  private boolean runInterceptor(Rq rq) {
+    List<Interceptor> interceptors = new ArrayList<>();
+
+    interceptors.add(Container.needLoginInterceptor);
+    interceptors.add(Container.needLogoutInterceptor);
+
+    for(Interceptor interceptor : interceptors) {
+      if(!interceptor.run(rq)) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
