@@ -3,6 +3,7 @@ package com.sbs.java.board;
 import com.sbs.java.board.boundedContext.article.controller.ArticleController;
 import com.sbs.java.board.boundedContext.controller.Controller;
 import com.sbs.java.board.boundedContext.member.controller.MemberController;
+import com.sbs.java.board.boundedContext.member.dto.Member;
 import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.base.Rq;
 
@@ -20,10 +21,20 @@ public class App {
     System.out.println("텍스트 게시판을 시작합니다.");
 
     while (true) {
-      System.out.print("명령) ");
+      Rq rq = new Rq();
+
+      Member member = (Member) rq.getSessionAttr("loginedMember");
+
+      String promptName = "명령어";
+
+      if(member != null) {
+        promptName = member.getUsername();
+      }
+
+      System.out.printf("%s) ", promptName);
       String cmd = Container.sc.nextLine();
 
-      Rq rq = new Rq(cmd);
+      rq.setCommand(cmd);
 
       rq.getActionPath();
 

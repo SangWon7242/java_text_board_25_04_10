@@ -32,12 +32,14 @@ public class Rq {
   @Getter
   String actionMethodName;
 
-  public Rq(String url) {
+  public Rq() {
+    session = Container.session;
+  }
+
+  public void setCommand(String url) {
     this.url = url;
     params = Util.getParamsFromUrl(this.url);
     urlPath = Util.getPathFromUrl(this.url);
-
-    session = Container.session;
   }
 
   public String getActionPath() {
