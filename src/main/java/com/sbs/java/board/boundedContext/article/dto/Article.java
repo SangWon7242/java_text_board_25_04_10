@@ -9,5 +9,6 @@ public class Article {
   private int id;
   private String subject;
   private String content;
+  private int memberId;
   private String writerName;
 }

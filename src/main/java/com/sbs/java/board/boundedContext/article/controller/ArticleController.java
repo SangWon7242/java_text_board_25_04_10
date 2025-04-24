@@ -51,7 +51,7 @@ public class ArticleController implements Controller {
 
     Member member = rq.getLoginedMember();
 
-    int id = articleService.write(subject, content, member.getName());
+    int id = articleService.write(subject, content, member.getId(), member.getName());
 
     System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
   }
@@ -128,7 +128,7 @@ public class ArticleController implements Controller {
 
     Member member = rq.getLoginedMember();
 
-    if(!article.getWriterName().equals(member.getName())) {
+    if(article.getMemberId() != member.getId()) {
       System.out.println("게시물에 대해 접근 권한이 없습니다.");
       return;
     }
@@ -169,7 +169,7 @@ public class ArticleController implements Controller {
 
     Member member = rq.getLoginedMember();
 
-    if(!article.getWriterName().equals(member.getName())) {
+    if(article.getMemberId() != member.getId()) {
       System.out.println("게시물에 대해 접근 권한이 없습니다.");
       return;
     }
