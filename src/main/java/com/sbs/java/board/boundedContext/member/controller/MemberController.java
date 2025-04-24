@@ -1,15 +1,25 @@
 package com.sbs.java.board.boundedContext.member.controller;
 
+import com.sbs.java.board.boundedContext.controller.Controller;
 import com.sbs.java.board.boundedContext.member.dto.Member;
 import com.sbs.java.board.boundedContext.member.service.MemberService;
 import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.base.Rq;
 
-public class MemberController {
+public class MemberController implements Controller {
   private MemberService memberService;
 
   public MemberController() {
     memberService = Container.memberService;
+  }
+
+  @Override
+  public void performAction(Rq rq) {
+    if (rq.getActionPath().equals("/usr/member/join")) {
+      doJoin(rq);
+    } else if (rq.getActionPath().equals("/usr/member/login")) {
+      doLogin(rq);
+    }
   }
 
   public void doJoin(Rq rq) {
@@ -26,14 +36,14 @@ public class MemberController {
       System.out.print("로그인 아이디 : ");
       username = Container.sc.nextLine();
 
-      if(username.trim().isEmpty()) {
+      if (username.trim().isEmpty()) {
         System.out.println("로그인 아이디를 입력해주세요.");
         continue;
       }
 
       member = memberService.findByUsername(username);
 
-      if(member != null) {
+      if (member != null) {
         System.out.println("입력하신 로그인 아이디는 이미 존재합니다.");
         continue;
       }
@@ -46,7 +56,7 @@ public class MemberController {
       System.out.print("비밀번호 : ");
       password = Container.sc.nextLine();
 
-      if(password.trim().isEmpty()) {
+      if (password.trim().isEmpty()) {
         System.out.println("비밀번호를 입력해주세요.");
         continue;
       }
@@ -55,12 +65,12 @@ public class MemberController {
         System.out.print("비밀번호 확인 : ");
         passwordConfirm = Container.sc.nextLine();
 
-        if(passwordConfirm.trim().isEmpty()) {
+        if (passwordConfirm.trim().isEmpty()) {
           System.out.println("비밀번호 확인을 입력해주세요.");
           continue;
         }
 
-        if(!passwordConfirm.equals(password)) {
+        if (!passwordConfirm.equals(password)) {
           System.out.println("비밀번호가 일치하지 않습니다.");
           continue;
         }
@@ -76,7 +86,7 @@ public class MemberController {
       System.out.print("이름 : ");
       name = Container.sc.nextLine();
 
-      if(name.trim().isEmpty()) {
+      if (name.trim().isEmpty()) {
         System.out.println("이름을 입력해주세요.");
         continue;
       }
@@ -101,14 +111,14 @@ public class MemberController {
       System.out.print("로그인 아이디 : ");
       username = Container.sc.nextLine();
 
-      if(username.trim().isEmpty()) {
+      if (username.trim().isEmpty()) {
         System.out.println("로그인 아이디를 입력해주세요.");
         continue;
       }
 
       member = memberService.findByUsername(username);
 
-      if(member == null) {
+      if (member == null) {
         System.out.printf("'%s'(은)는 존재하지 않는 로그인 아이디입니다.\n", username);
         continue;
       }
@@ -121,7 +131,7 @@ public class MemberController {
 
     // 로그인 비밀번호 입력
     while (true) {
-      if(tryPasswordCount >= tryPasswordMaxCount) {
+      if (tryPasswordCount >= tryPasswordMaxCount) {
         System.out.println("비밀번호 다시 확인 후 입력해주세요.");
         return;
       }
@@ -129,12 +139,12 @@ public class MemberController {
       System.out.print("비밀번호 : ");
       password = Container.sc.nextLine();
 
-      if(password.trim().isEmpty()) {
+      if (password.trim().isEmpty()) {
         System.out.println("비밀번호를 입력해주세요.");
         continue;
       }
 
-      if(!member.getPassword().equals(password)) {
+      if (!member.getPassword().equals(password)) {
         System.out.println("비밀번호가 일치하지 않습니다.");
         tryPasswordCount++;
 
@@ -142,10 +152,10 @@ public class MemberController {
 
         continue;
       }
-      
+
       break;
     }
-    
+
     System.out.printf("'%s'님 로그인 되었습니다.\n", username);
   }
 }

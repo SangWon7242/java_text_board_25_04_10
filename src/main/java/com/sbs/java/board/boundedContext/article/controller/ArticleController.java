@@ -2,16 +2,32 @@ package com.sbs.java.board.boundedContext.article.controller;
 
 import com.sbs.java.board.boundedContext.article.dto.Article;
 import com.sbs.java.board.boundedContext.article.service.ArticleService;
+import com.sbs.java.board.boundedContext.controller.Controller;
 import com.sbs.java.board.container.Container;
 import com.sbs.java.board.global.base.Rq;
 
 import java.util.List;
 
-public class ArticleController {
+public class ArticleController implements Controller {
   public ArticleService articleService;
 
   public ArticleController() {
     articleService = Container.articleService;
+  }
+
+  @Override
+  public void performAction(Rq rq) {
+    if (rq.getActionPath().equals("/usr/article/write")) {
+      doWrite();
+    } else if (rq.getActionPath().equals("/usr/article/list")) {
+      showList(rq);
+    } else if (rq.getActionPath().equals("/usr/article/detail")) {
+      showDetail(rq);
+    } else if (rq.getActionPath().equals("/usr/article/modify")) {
+      doModify(rq);
+    } else if (rq.getActionPath().equals("/usr/article/delete")) {
+      doDelete(rq);
+    }
   }
 
   public void doWrite() {
@@ -54,7 +70,7 @@ public class ArticleController {
   public void showDetail(Rq rq) {
     int id = rq.getIntParam("id", 0);
 
-    if(id == 0) {
+    if (id == 0) {
       System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
@@ -87,7 +103,7 @@ public class ArticleController {
   public void doModify(Rq rq) {
     int id = rq.getIntParam("id", 0);
 
-    if(id == 0) {
+    if (id == 0) {
       System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
@@ -101,7 +117,7 @@ public class ArticleController {
 
     Article article = articleService.findById(id);
 
-    if(article == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
       return;
     }
@@ -121,7 +137,7 @@ public class ArticleController {
   public void doDelete(Rq rq) {
     int id = rq.getIntParam("id", 0);
 
-    if(id == 0) {
+    if (id == 0) {
       System.out.println("id를 올바르게 입력해주세요.");
       return;
     }
@@ -135,7 +151,7 @@ public class ArticleController {
 
     Article article = articleService.findById(id);
 
-    if(article == null) {
+    if (article == null) {
       System.out.printf("%d번 게시물은 존재하지 않습니다.\n", id);
       return;
     }
