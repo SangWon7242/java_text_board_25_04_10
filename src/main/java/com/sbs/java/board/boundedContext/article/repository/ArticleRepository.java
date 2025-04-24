@@ -21,14 +21,14 @@ public class ArticleRepository {
 
   void makeTestData() {
     IntStream.rangeClosed(1, 100)
-        .forEach(i -> write("제목" + i, "내용" + i, 1, "익명"));
+        .forEach(i -> write("제목" + i, "내용" + i, 1,  (int)(Math.random() * 2) + 1, "익명"));
   }
 
-  public int write(String subject, String content, int memberId, String writerName) {
+  public int write(String subject, String content, int memberId, int boardId, String writerName) {
     int id = ++lastId;
 
     // 객체 생성 후, 객체가 가지고 있는 변수에 데이터 저장
-    Article article = new Article(id, subject, content, memberId, writerName);
+    Article article = new Article(id, subject, content, memberId, boardId, writerName);
     articles.add(article);
 
     return id;

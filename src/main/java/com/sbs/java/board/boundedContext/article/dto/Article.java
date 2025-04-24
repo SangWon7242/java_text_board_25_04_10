@@ -10,5 +10,6 @@ public class Article {
   private String subject;
   private String content;
   private int memberId;
+  private int boardId;
   private String writerName;
 }
