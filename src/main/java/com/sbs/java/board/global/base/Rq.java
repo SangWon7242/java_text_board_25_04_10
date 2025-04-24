@@ -1,5 +1,7 @@
 package com.sbs.java.board.global.base;
 
+import com.sbs.java.board.container.Container;
+import com.sbs.java.board.global.session.Session;
 import com.sbs.java.board.global.util.Util;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,6 +17,11 @@ public class Rq {
   @Getter
   public String urlPath;
 
+  @Getter
+  public Session session;
+
+  public String loginedMember = "loginedMember";
+
   @Setter
   @Getter
   String controllerTypeCode;
@@ -29,6 +36,8 @@ public class Rq {
     this.url = url;
     params = Util.getParamsFromUrl(this.url);
     urlPath = Util.getPathFromUrl(this.url);
+
+    session = Container.session;
   }
 
   public String getActionPath() {
@@ -55,5 +64,35 @@ public class Rq {
     if (!params.containsKey(paramName)) return defaultValue;
 
     return params.get(paramName);
+  }
+  
+  // 세션에 로그인 되어 있는지 확인
+  public boolean isLogined() {
+    return hasSessionAttr(loginedMember);
+  }
+
+  // 세션에 로그아웃 되어 있는지 확인
+  public boolean isLogout() {
+    return !isLogined();
+  }
+
+  // 세션 가져오기
+  public Object getSessionAttr(String attrName) {
+    return session.getAttribute(attrName);
+  }
+
+  // 세션 저장
+  public void setSessionAttr(String attrName, Object value) {
+    session.setAttribute(attrName, value);
+  }
+
+  // 세션 존재 여부
+  public boolean hasSessionAttr(String attrName) {
+    return session.hasAttribute(attrName);
+  }
+
+  // 세션 제거
+  public void removeSessionAttr(String attrName) {
+    session.removeAttribute(attrName);
   }
 }
