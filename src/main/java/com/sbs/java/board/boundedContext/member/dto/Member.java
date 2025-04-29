@@ -11,4 +11,12 @@ public class Member {
   private final String username;
   private String password;
   private String name;
+
+  public String getType() {
+    return isAdmin() ? "관리자" : "일반회원";
+  }
+
+  private boolean isAdmin() {
+    return username.equals("admin");
+  }
 }

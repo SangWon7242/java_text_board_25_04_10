@@ -21,7 +21,7 @@ public class MemberController implements Controller {
       doLogin(rq);
     } else if (rq.getActionPath().equals("/usr/member/logout")) {
       doLogout(rq);
-    } else if (rq.getActionPath().equals("/usr/member/mypage")) {
+    } else if (rq.getActionPath().equals("/usr/member/myPage")) {
       showMyPage(rq);
     }
   }
@@ -172,10 +172,11 @@ public class MemberController implements Controller {
   }
 
   private void showMyPage(Rq rq) {
-    Member member = (Member) rq.getSessionAttr("loginedMember");
+    Member member = rq.getLoginedMember();
 
     System.out.printf("== '%s'님의 정보 ==\n", member.getUsername());
     System.out.printf("로그인 아이디 : %s\n", member.getUsername());
     System.out.printf("이름 : %s\n", member.getName());
+    System.out.printf("회원종류 : %s\n", member.getType());
   }
 }
