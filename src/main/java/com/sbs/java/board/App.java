@@ -21,7 +21,7 @@ public class App {
 
       String promptName = "명령어";
 
-      if(member != null) {
+      if (member != null) {
         promptName = member.getUsername();
       }
 
@@ -32,7 +32,7 @@ public class App {
 
       rq.getActionPath();
 
-      if(!runInterceptor(rq)) {
+      if (!runInterceptor(rq)) {
         continue;
       }
 
@@ -62,6 +62,11 @@ public class App {
           case "member":
             return Container.memberController;
         }
+      case "adm":
+        switch (rq.getControllerName()) {
+          case "board":
+            return Container.boardController;
+        }
     }
 
     return null;
@@ -73,8 +78,8 @@ public class App {
     interceptors.add(Container.needLoginInterceptor);
     interceptors.add(Container.needLogoutInterceptor);
 
-    for(Interceptor interceptor : interceptors) {
-      if(!interceptor.run(rq)) {
+    for (Interceptor interceptor : interceptors) {
+      if (!interceptor.run(rq)) {
         return false;
       }
     }

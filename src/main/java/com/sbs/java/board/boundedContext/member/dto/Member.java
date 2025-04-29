@@ -2,7 +2,6 @@ package com.sbs.java.board.boundedContext.member.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @Data
@@ -16,7 +15,7 @@ public class Member {
     return isAdmin() ? "관리자" : "일반회원";
   }
 
-  private boolean isAdmin() {
+  public boolean isAdmin() {
     return username.equals("admin");
   }
 }
