@@ -29,6 +29,13 @@ public class BoardRepository {
         .orElse(null);
   }
 
+  public Board findByBoardId(int id) {
+    return boards.stream()
+        .filter(board -> board.getId() == id)
+        .findFirst()
+        .orElse(null);
+  }
+
   public void makeBoard(String name, String code) {
     int id = ++lastId;
 
@@ -37,5 +44,9 @@ public class BoardRepository {
 
     Board board = new Board(id, regDate, updateDate, name, code);
     boards.add(board);
+  }
+
+  public List<Board> findAll() {
+    return boards;
   }
 }
