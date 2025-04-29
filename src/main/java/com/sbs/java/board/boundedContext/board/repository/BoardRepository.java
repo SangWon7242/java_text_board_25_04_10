@@ -13,7 +13,16 @@ public class BoardRepository {
 
   public BoardRepository() {
     boards = new ArrayList<>();
-    lastId = 0;
+
+    makeTestDate();
+
+    lastId = boards.get(boards.size() - 1).getId();
+  }
+
+  public void makeTestDate() {
+    makeBoard("자유게시판", "free");
+    makeBoard("공지사항", "notice");
+    makeBoard("질의응답", "qna");
   }
   public Board findByBoardName(String name) {
     return boards.stream()
