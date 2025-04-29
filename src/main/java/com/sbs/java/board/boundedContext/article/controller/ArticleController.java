@@ -37,12 +37,24 @@ public class ArticleController implements Controller {
   }
 
   public void doWrite(Rq rq) {
-    // int boardId = rq.getIntParam("boardId", 1);
+    int boardId = rq.getIntParam("boardId", 0);
+
+    if(boardId == 0) {
+      System.out.println("boardId를 제대로 입력해주세요.");
+      return;
+    }
 
     List<Board> boards = boardService.findAll();
 
     if(boards.isEmpty()) {
       System.out.println("작성 가능한 게시판이 없습니다.");
+      return;
+    }
+
+    Board selectedBoard = boardService.findByBoardId(boardId);
+
+    if(selectedBoard == null) {
+      System.out.println("존재하지 않는 게시판입니다.");
       return;
     }
 
@@ -53,16 +65,6 @@ public class ArticleController implements Controller {
     boards.forEach(
         board -> System.out.printf("%d | %s | %s\n", board.getId(), board.getName(), board.getCode())
     );
-
-    System.out.print("게시판 번호 선택 : ");
-    int boardId = Integer.parseInt(Container.sc.nextLine());
-
-    Board selectedBoard = boardService.findByBoardId(boardId);
-
-    if(selectedBoard == null) {
-      System.out.println("존재하지 않는 게시판입니다.");
-      return;
-    }
 
     System.out.printf("== '%s' 게시물 작성 ==\n", selectedBoard.getName());
     System.out.print("제목 : ");
