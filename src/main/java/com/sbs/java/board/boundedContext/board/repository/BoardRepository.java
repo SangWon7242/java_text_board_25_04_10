@@ -2,6 +2,7 @@ package com.sbs.java.board.boundedContext.board.repository;
 
 import com.sbs.java.board.boundedContext.article.dto.Article;
 import com.sbs.java.board.boundedContext.board.dto.Board;
+import com.sbs.java.board.global.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,10 @@ public class BoardRepository {
   public void makeBoard(String name, String code) {
     int id = ++lastId;
 
-    // 객체 생성 후, 객체가 가지고 있는 변수에 데이터 저장
-    Board board = new Board(id, name, code);
+    String regDate = Util.getNowDateStr();
+    String updateDate = Util.getNowDateStr();
+
+    Board board = new Board(id, regDate, updateDate, name, code);
     boards.add(board);
   }
 }

@@ -7,6 +7,8 @@ import lombok.Data;
 @Data
 public class Board {
   private final int id;
+  private String regDate;
+  private String updateDate;
   private String name;
   private String code;
 }

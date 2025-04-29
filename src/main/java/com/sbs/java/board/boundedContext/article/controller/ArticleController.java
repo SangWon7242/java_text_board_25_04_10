@@ -67,10 +67,10 @@ public class ArticleController implements Controller {
     List<Article> articles = articleService.findAll(searchKeyword, orderBy);
 
     System.out.printf("== 게시물 리스트(총 %d개) ==\n", articles.size());
-    System.out.println("번호 | 제목 | 작성자 | 게시판 번호");
+    System.out.println("번호 | 작성 날짜 | 제목 | 작성자 | 게시판 번호");
 
     articles.forEach(
-        article -> System.out.printf("%d | %s | %s | %d\n", article.getId(), article.getSubject(), article.getWriterName(), article.getBoardId())
+        article -> System.out.printf("%d | %s | %s | %s | %d\n", article.getId(), article.getRegDate(), article.getSubject(), article.getWriterName(), article.getBoardId())
     );
   }
 
@@ -103,6 +103,8 @@ public class ArticleController implements Controller {
 
     System.out.printf("== %d번 게시물 상세보기 ==\n", id);
     System.out.printf("번호 : %d\n", article.getId());
+    System.out.printf("작성 날짜 : %s\n", article.getRegDate());
+    System.out.printf("수정 날짜 : %s\n", article.getUpdateDate());
     System.out.printf("작성자 : %s\n", article.getWriterName());
     System.out.printf("제목 : %s\n", article.getSubject());
     System.out.printf("내용 : %s\n", article.getContent());

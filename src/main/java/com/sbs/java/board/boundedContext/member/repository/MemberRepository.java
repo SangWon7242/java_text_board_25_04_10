@@ -1,6 +1,7 @@
 package com.sbs.java.board.boundedContext.member.repository;
 
 import com.sbs.java.board.boundedContext.member.dto.Member;
+import com.sbs.java.board.global.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +28,10 @@ public class MemberRepository {
   public void join(String username, String password, String name) {
     int id = ++lastId;
 
-    Member member = new Member(id, username, password, name);
+    String regDate = Util.getNowDateStr();
+    String updateDate = Util.getNowDateStr();
+
+    Member member = new Member(id, regDate, updateDate, username, password, name);
     members.add(member);
   }
 

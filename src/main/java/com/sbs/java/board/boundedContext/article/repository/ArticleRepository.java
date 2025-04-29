@@ -1,6 +1,7 @@
 package com.sbs.java.board.boundedContext.article.repository;
 
 import com.sbs.java.board.boundedContext.article.dto.Article;
+import com.sbs.java.board.global.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,11 @@ public class ArticleRepository {
   public int write(String subject, String content, int memberId, int boardId, String writerName) {
     int id = ++lastId;
 
+    String regDate = Util.getNowDateStr();
+    String updateDate = Util.getNowDateStr();
+
     // 객체 생성 후, 객체가 가지고 있는 변수에 데이터 저장
-    Article article = new Article(id, subject, content, memberId, boardId, writerName);
+    Article article = new Article(id, regDate, updateDate, subject, content, memberId, boardId, writerName);
     articles.add(article);
 
     return id;
@@ -82,6 +86,7 @@ public class ArticleRepository {
   public void modify(int id, String subject, String content) {
     Article article = findById(id);
 
+    article.setUpdateDate(Util.getNowDateStr());
     article.setSubject(subject);
     article.setContent(content);
   }
