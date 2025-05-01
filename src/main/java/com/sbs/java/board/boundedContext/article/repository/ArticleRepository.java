@@ -33,7 +33,7 @@ public class ArticleRepository {
     String updateDate = Util.getNowDateStr();
 
     // 객체 생성 후, 객체가 가지고 있는 변수에 데이터 저장
-    Article article = new Article(id, regDate, updateDate, subject, content, memberId, boardId, writerName, boardName);
+    Article article = new Article(id, regDate, updateDate, subject, content, memberId, boardId, writerName, boardName, 0);
     articles.add(article);
 
     return id;
@@ -157,5 +157,11 @@ public class ArticleRepository {
     return (int) articles.stream()
         .filter(article -> article.getBoardId() == boardId)
         .count();
+  }
+
+  public void increaseHit(int id) {
+    Article article = findById(id);
+
+    article.setHit(article.getHit() + 1);
   }
 }

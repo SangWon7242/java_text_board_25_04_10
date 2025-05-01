@@ -41,4 +41,8 @@ public class ArticleService {
   public int getArticleCountByBoardId(int boardId) {
     return articleRepository.getArticleCountByBoardId(boardId);
   }
+
+  public void increaseHit(int id) {
+    articleRepository.increaseHit(id);
+  }
 }
