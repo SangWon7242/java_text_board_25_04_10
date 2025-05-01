@@ -61,6 +61,8 @@ public class App {
             return Container.articleController;
           case "member":
             return Container.memberController;
+          case "board":
+            return Container.boardController;
         }
       case "adm":
         switch (rq.getControllerName()) {

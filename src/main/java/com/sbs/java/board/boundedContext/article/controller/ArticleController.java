@@ -95,6 +95,7 @@ public class ArticleController implements Controller {
   public void showList(Rq rq) {
     String searchKeyword = rq.getParam("searchKeyword", "");
     String orderBy = rq.getParam("orderBy", "idDesc");
+    // int boardId = rq.getIntParam("boardId", 0);
 
     List<Article> articles = articleService.findAll(searchKeyword, orderBy);
 
