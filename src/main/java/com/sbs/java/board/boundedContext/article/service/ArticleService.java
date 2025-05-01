@@ -37,4 +37,8 @@ public class ArticleService {
   public Article findById(int id) {
     return articleRepository.findById(id);
   }
+
+  public int getArticleCountByBoardId(int boardId) {
+    return articleRepository.getArticleCountByBoardId(boardId);
+  }
 }

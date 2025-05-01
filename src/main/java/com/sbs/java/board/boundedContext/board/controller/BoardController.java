@@ -29,20 +29,22 @@ public class BoardController implements Controller {
   private void showBoardList(Rq rq) {
     System.out.println("== 게시판 목록 ==");
 
-    System.out.println("번호 | 이름 | 코드");
+    System.out.println("번호 | 이름 | 코드 | 게시물 수");
     System.out.println("_".repeat(30));
 
     List<Board> boards = boardService.findAll();
 
-    if(boards.isEmpty()) {
+    if (boards.isEmpty()) {
       System.out.println("게시판이 존재하지 않습니다.");
       return;
     }
 
-    boards.stream()
-        .forEach(
-            board -> System.out.printf("%d | %s | %s\n", board.getId(), board.getName(), board.getCode())
-        );
+    boards.forEach(
+        board -> {
+          int articleCount = Container.articleService.getArticleCountByBoardId(board.getId());
+          System.out.printf("%d | %s | %s | %d\n", board.getId(), board.getName(), board.getCode(), articleCount);
+        }
+    );
 
   }
 
