@@ -21,8 +21,8 @@ public class ArticleService {
     return articleRepository.findAll();
   }
 
-  public List<Article> findAll(String searchKeyword, String orderBy, int boardId) {
-    return articleRepository.findAll(searchKeyword, orderBy, boardId);
+  public List<Article> findAll(String searchKeywordTypeCode, String searchKeyword, String orderBy, int boardId) {
+    return articleRepository.findAll(searchKeywordTypeCode, searchKeyword, orderBy, boardId);
   }
 
   public void modify(int id, String subject, String content) {

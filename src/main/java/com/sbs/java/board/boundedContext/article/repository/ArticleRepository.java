@@ -43,11 +43,16 @@ public class ArticleRepository {
     return articles;
   }
 
-  public List<Article> findAll(String searchKeyword, String orderBy, int boardId) {
+  public List<Article> findAll(String searchKeywordTypeCode, String searchKeyword, String orderBy, int boardId) {
     List<Article> filteredArticles = findAll();
 
+    // 게시판에 맞는 게시물 리스팅
     filteredArticles = filterByBoardId(filteredArticles, boardId);
-    filteredArticles = filterByKeyword(filteredArticles, searchKeyword);
+
+    // 검색코드와 검색어에 맞는 게시물 리스팅
+    filteredArticles = filterByKeyword(filteredArticles, searchKeyword, searchKeywordTypeCode);
+
+    // 정렬된 게시물 리스팅
     filteredArticles = sortArticles(filteredArticles, orderBy);
 
     // 정렬 수행
@@ -66,13 +71,40 @@ public class ArticleRepository {
 
 
   // 검색 로직을 담당
-  private List<Article> filterByKeyword(List<Article> articles, String searchKeyword) {
+  private List<Article> filterByKeyword(List<Article> articles, String searchKeyword, String searchKeywordTypeCode) {
     if(searchKeyword.isEmpty()) {
       return articles;
     }
 
+    /*
+    // v1
     return articles.stream()
-        .filter(article -> article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword))
+        .filter(article -> {
+          switch (searchKeywordTypeCode) {
+            case "subject":
+              System.out.println("subject 실행");
+              return article.getSubject().contains(searchKeyword);
+            case "content":
+              System.out.println("content 실행");
+              return article.getContent().contains(searchKeyword);
+            case "subject,content":
+            default:
+              System.out.println("subject,content 실행");
+              return article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword);
+          }
+        })
+        .collect(Collectors.toList());
+     */
+
+    // v2
+    return articles.stream()
+        .filter(article -> {
+          return switch (searchKeywordTypeCode) {
+            case "subject" -> article.getSubject().contains(searchKeyword);
+            case "content" -> article.getContent().contains(searchKeyword);
+            default -> article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword);
+          };
+        })
         .collect(Collectors.toList());
   }
 
