@@ -13,16 +13,16 @@ public class ArticleService {
     articleRepository = Container.articleRepository;
   }
 
-  public int write(String subject, String content, int memberId, int boardId, String writerName) {
-    return articleRepository.write(subject, content, memberId, boardId, writerName);
+  public int write(String subject, String content, int memberId, int boardId, String writerName, String boardName) {
+    return articleRepository.write(subject, content, memberId, boardId, writerName, boardName);
   }
 
   public List<Article> findAll() {
     return articleRepository.findAll();
   }
 
-  public List<Article> findAll(String searchKeyword, String orderBy) {
-    return articleRepository.findAll(searchKeyword, orderBy);
+  public List<Article> findAll(String searchKeyword, String orderBy, int boardId) {
+    return articleRepository.findAll(searchKeyword, orderBy, boardId);
   }
 
   public void modify(int id, String subject, String content) {

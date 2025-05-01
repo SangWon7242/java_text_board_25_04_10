@@ -87,7 +87,9 @@ public class ArticleController implements Controller {
     int memberId = member.getId();
     String writerName = member.getName();
 
-    int id = articleService.write(subject, content, memberId, boardId, writerName);
+    String boardName = selectedBoard.getName();
+
+    int id = articleService.write(subject, content, memberId, boardId, writerName, boardName);
 
     System.out.printf("%d번 게시물이 등록되었습니다.\n", id);
   }
@@ -95,15 +97,24 @@ public class ArticleController implements Controller {
   public void showList(Rq rq) {
     String searchKeyword = rq.getParam("searchKeyword", "");
     String orderBy = rq.getParam("orderBy", "idDesc");
-    // int boardId = rq.getIntParam("boardId", 0);
+    int boardId = rq.getIntParam("boardId", 0);
 
-    List<Article> articles = articleService.findAll(searchKeyword, orderBy);
+    List<Article> articles = articleService.findAll(searchKeyword, orderBy, boardId);
 
-    System.out.printf("== 게시물 리스트(총 %d개) ==\n", articles.size());
-    System.out.println("번호 | 작성 날짜 | 제목 | 작성자 | 게시판 번호");
+
+    String boardName = "전체";
+
+    Board board = boardService.findByBoardId(boardId);
+
+    if(boardId > 0) {
+      boardName = board.getName();
+    }
+
+    System.out.printf("== '%s' 게시물 리스트(총 %d개) ==\n", boardName, articles.size());
+    System.out.println("번호 | 작성 날짜 | 제목 | 작성자 | 게시판");
 
     articles.forEach(
-        article -> System.out.printf("%d | %s | %s | %s | %d\n", article.getId(), article.getRegDate(), article.getSubject(), article.getWriterName(), article.getBoardId())
+        article -> System.out.printf("%d | %s | %s | %s | %s\n", article.getId(), article.getRegDate(), article.getSubject(), article.getWriterName(), article.getBoardName())
     );
   }
 
