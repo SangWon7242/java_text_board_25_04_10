@@ -44,22 +44,21 @@ public class ArticleRepository {
   }
 
   public List<Article> findAll(String searchKeyword, String orderBy, int boardId) {
-    if(boardId > 0) {
-      // 게시판 별로 게시물 리스팅 수행
-      List<Article> boardArticles = findAllByBoardId(boardId);
+    List<Article> filteredArticles = findAll();
 
-      // 정렬 수행
-      return sortArticles(boardArticles, orderBy);
-    }
-
-    // 검색 수행
-    List<Article> filteredArticles = filterByKeyword(searchKeyword);
+    filteredArticles = filterByBoardId(filteredArticles, boardId);
+    filteredArticles = filterByKeyword(filteredArticles, searchKeyword);
+    filteredArticles = sortArticles(filteredArticles, orderBy);
 
     // 정렬 수행
-    return sortArticles(filteredArticles, orderBy);
+    return filteredArticles;
   }
 
-  private List<Article> findAllByBoardId(int boardId) {
+  private List<Article> filterByBoardId(List<Article> articles, int boardId) {
+    if(boardId <= 0) {
+      return articles;
+    }
+
     return findAll().stream()
         .filter(article -> article.getBoardId() == boardId)
         .collect(Collectors.toList());
@@ -67,16 +66,14 @@ public class ArticleRepository {
 
 
   // 검색 로직을 담당
-  private List<Article> filterByKeyword(String searchKeyword) {
-    List<Article> filteredArticles = findAll();
-
-    if (!searchKeyword.isEmpty()) {
-      filteredArticles = articles.stream()
-          .filter(article -> article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword))
-          .collect(Collectors.toList());
+  private List<Article> filterByKeyword(List<Article> articles, String searchKeyword) {
+    if(searchKeyword.isEmpty()) {
+      return articles;
     }
 
-    return filteredArticles;
+    return articles.stream()
+        .filter(article -> article.getSubject().contains(searchKeyword) || article.getContent().contains(searchKeyword))
+        .collect(Collectors.toList());
   }
 
   // 정렬 로직을 담당

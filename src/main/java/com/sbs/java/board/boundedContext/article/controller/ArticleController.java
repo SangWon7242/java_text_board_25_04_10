@@ -101,7 +101,6 @@ public class ArticleController implements Controller {
 
     List<Article> articles = articleService.findAll(searchKeyword, orderBy, boardId);
 
-
     String boardName = "전체";
 
     Board board = boardService.findByBoardId(boardId);
